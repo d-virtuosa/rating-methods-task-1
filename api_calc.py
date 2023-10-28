@@ -9,6 +9,9 @@ def plus():
         return jsonify({'error': 'Invalid input'}), 400
 
     numbers = data['numbers']
+    for number in numbers:
+        number = float(number)
+
     result = sum(numbers)
     return jsonify({'result': result})
 
@@ -19,6 +22,9 @@ def minus():
         return jsonify({'error': 'Invalid input'}), 400
 
     numbers = data['numbers']
+    for number in numbers:
+        number = float(number)
+
     result = numbers[0] - sum(numbers[1:])
     return jsonify({'result': result})
 
@@ -29,6 +35,9 @@ def multiply():
         return jsonify({'error': 'Invalid input'}), 400
 
     numbers = data['numbers']
+    for number in numbers:
+        number = float(number)
+        
     result = 1
     for num in numbers:
         result *= num
@@ -41,6 +50,9 @@ def divide():
         return jsonify({'error': 'Invalid input'}), 400
 
     numbers = data['numbers']
+    for number in numbers:
+        number = float(number)
+        
     if 0 in numbers[1:]:
         return jsonify({'error': 'Cannot divide by zero'}), 400
 
