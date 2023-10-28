@@ -5,9 +5,9 @@ pipeline {
         stage('Removing previous image') {
             steps {
                 sh 'running=$(docker ps -a | grep Up | cut -c1-12)'
-		sh 'if [["$running" != ""]]; then \
-		    docker stop $running \
-		    fi
+		sh 'if [["$running" != ""]]; then \'
+		    'docker stop $running \'
+		    'fi'
             }
         }
         stage('Build and run container') {
