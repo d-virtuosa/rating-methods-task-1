@@ -10,7 +10,7 @@ pipeline {
         stage('Build and run container') {
             steps {
                 sh 'docker build -f Dockerfile -t api_calc .'
-		sh 'docker run -d -p 5000:5000 api_calc:latest'
+                sh 'docker run -d -p 5000:5000 api_calc:latest'
             }
         }
         stage('Scan with Trivy') {
@@ -30,6 +30,12 @@ pipeline {
 
                 // Scan again and fail on CRITICAL vulns
                 sh 'trivy image --ignore-unfixed --vuln-type os,library --exit-code 1 --severity CRITICAL api_calc:latest'
+            }
+        }
+        stage('Scan with Semgrep') {
+            steps {
+                sh 'pip3 install semgrep'
+                sh 'semgrep ci'
             }
         }
     }
