@@ -3,12 +3,9 @@ from flask import Flask, request, jsonify
 def validate_input(numbers):
     converted_numbers = []
     for number in numbers:
-        try:
-            float_number = float(number)
-            converted_numbers.append(float_number)
-        
-        except ValueError:
-            return jsonify({'error': 'Invalid input (string detected)'}), 400
+        float_number = float(number)
+        converted_numbers.append(float_number)
+
     return converted_numbers
 
 app = Flask(__name__)
@@ -20,7 +17,13 @@ def plus():
         return jsonify({'error': 'Invalid input (type your request in "numbers")'}), 400
 
     numbers = data['numbers']
-    numbers = validate_input(numbers)
+    
+    try:
+        numbers = validate_input(numbers)
+
+    except ValueError:
+        return jsonify({'error': 'Invalid input (string detected)'}), 400
+    
     result = sum(numbers)
     return jsonify({'result': result})
 
@@ -31,7 +34,12 @@ def minus():
         return jsonify({'error': 'Invalid input (type your request in "numbers")'}), 400
 
     numbers = data['numbers']
-    numbers = validate_input(numbers)
+    try:
+        numbers = validate_input(numbers)
+
+    except ValueError:
+        return jsonify({'error': 'Invalid input (string detected)'}), 400
+    
     result = numbers[0] - sum(numbers[1:])
     return jsonify({'result': result})
 
@@ -42,7 +50,12 @@ def multiply():
         return jsonify({'error': 'Invalid input (type your request in "numbers")'}), 400
 
     numbers = data['numbers']
-    numbers = validate_input(numbers) 
+    try:
+        numbers = validate_input(numbers)
+
+    except ValueError:
+        return jsonify({'error': 'Invalid input (string detected)'}), 400
+    
     result = 1
     for num in numbers:
         result *= num
@@ -55,7 +68,12 @@ def divide():
         return jsonify({'error': 'Invalid input (type your request in "numbers")'}), 400
 
     numbers = data['numbers']
-    numbers = validate_input(numbers)
+    try:
+        numbers = validate_input(numbers)
+
+    except ValueError:
+        return jsonify({'error': 'Invalid input (string detected)'}), 400
+    
     if 0 in numbers[1:]:
         return jsonify({'error': 'Cannot divide by zero'}), 400
 
