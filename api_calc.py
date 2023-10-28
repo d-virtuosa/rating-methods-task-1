@@ -1,17 +1,26 @@
 from flask import Flask, request, jsonify
 
+def validate_input(numbers):
+    converted_numbers = []
+    for number in numbers:
+        try:
+            float_number = float(number)
+            converted_numbers.append(float_number)
+        
+        except ValueError:
+            return jsonify({'error': 'Invalid input (string detected)'}), 400
+    return converted_numbers
+
 app = Flask(__name__)
 
 @app.route('/plus', methods=['POST'])
 def plus():
     data = request.get_json()
     if 'numbers' not in data:
-        return jsonify({'error': 'Invalid input'}), 400
+        return jsonify({'error': 'Invalid input (type your request in "numbers")'}), 400
 
     numbers = data['numbers']
-    for number in numbers:
-        number = float(number)
-
+    numbers = validate_input(numbers)
     result = sum(numbers)
     return jsonify({'result': result})
 
@@ -19,12 +28,10 @@ def plus():
 def minus():
     data = request.get_json()
     if 'numbers' not in data:
-        return jsonify({'error': 'Invalid input'}), 400
+        return jsonify({'error': 'Invalid input (type your request in "numbers")'}), 400
 
     numbers = data['numbers']
-    for number in numbers:
-        number = float(number)
-
+    numbers = validate_input(numbers)
     result = numbers[0] - sum(numbers[1:])
     return jsonify({'result': result})
 
@@ -32,12 +39,10 @@ def minus():
 def multiply():
     data = request.get_json()
     if 'numbers' not in data:
-        return jsonify({'error': 'Invalid input'}), 400
+        return jsonify({'error': 'Invalid input (type your request in "numbers")'}), 400
 
     numbers = data['numbers']
-    for number in numbers:
-        number = float(number)
-        
+    numbers = validate_input(numbers) 
     result = 1
     for num in numbers:
         result *= num
@@ -47,12 +52,10 @@ def multiply():
 def divide():
     data = request.get_json()
     if 'numbers' not in data:
-        return jsonify({'error': 'Invalid input'}), 400
+        return jsonify({'error': 'Invalid input (type your request in "numbers")'}), 400
 
     numbers = data['numbers']
-    for number in numbers:
-        number = float(number)
-        
+    numbers = validate_input(numbers)
     if 0 in numbers[1:]:
         return jsonify({'error': 'Cannot divide by zero'}), 400
 
