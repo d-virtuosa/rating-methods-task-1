@@ -4,8 +4,8 @@ pipeline {
     stages {
         stage('Removing previous image') {
             steps {
-                bash 'running=$(docker ps -a | grep Up | cut -c1-12)'
-		bash 'docker stop $running'
+                sh 'running=$(docker ps -a | grep Up | cut -c1-12)'
+		sh 'docker stop $running'
             }
         }
         stage('Build and run container') {
