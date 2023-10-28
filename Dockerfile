@@ -4,3 +4,4 @@ WORKDIR /work
 COPY api_calc.py .
 EXPOSE 5000
 CMD ["python", "api_calc.py"]
+USER 1000
