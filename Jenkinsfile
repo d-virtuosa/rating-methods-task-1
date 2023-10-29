@@ -40,15 +40,7 @@ pipeline {
                 pip3 install semgrep
                 semgrep --config=auto --junit-xml -o reports/api_calc-scan.xml api_calc.py
                 deactivate'''
-                publishHTML target : [
-                    allowMissing: true,
-                    alwaysLinkToLastBuild: true,
-                    keepAll: true,
-                    reportDir: 'reports',
-                    reportFiles: 'api_calc-scan.xml',
-                    reportName: 'Semgrep Scan',
-                    reportTitles: 'Semgrep Scan'
-                ]
+                junit skipMarkingBuildUnstable: true, testResults: 'api_calc-scan.xml'
             }
         }
     }
