@@ -34,7 +34,12 @@ pipeline {
         }
         stage('Scan with Semgrep') {
             steps {
-                sh 'pip3 install semgrep && locate semgrep && semgrep api_calc.py'
+                sh '''#!/bin/bash
+                python3 -m venv .venv
+                source .venv/bin/activate
+                pip3 install semgrep
+                semgrep api_calc.py
+                deactivate'''
             }
         }
     }
