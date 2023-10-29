@@ -17,7 +17,7 @@ pipeline {
             steps {
                 sh 'curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/html.tpl > html.tpl'
                 sh 'mkdir -p reports'
-                sh 'trivy image --ignore-unfixed --format template --template "@html.tpl" -o reports/api_calc-scan.html api_calc:latest'
+                sh 'trivy image --format template --template "@html.tpl" -o reports/api_calc-scan.html api_calc:latest'
                 publishHTML target : [
                     allowMissing: true,
                     alwaysLinkToLastBuild: true,
