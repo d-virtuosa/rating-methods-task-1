@@ -38,8 +38,17 @@ pipeline {
                 python3 -m venv .venv
                 source .venv/bin/activate
                 pip3 install semgrep
-                semgrep api_calc.py
+                semgrep --config=auto --junit-xml -o reports/api_calc-scan.xml api_calc.py
                 deactivate'''
+                publishHTML target : [
+                    allowMissing: true,
+                    alwaysLinkToLastBuild: true,
+                    keepAll: true,
+                    reportDir: 'reports',
+                    reportFiles: 'api_calc-scan.xml',
+                    reportName: 'Semgrep Scan',
+                    reportTitles: 'Semgrep Scan'
+                ]
             }
         }
     }
