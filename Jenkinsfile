@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Removing previous image') {
             steps {
-                sh 'docker stop $(docker container ls -q)'
+                sh 'docker stop $(docker container ls -q) 2> /dev/null'
             }
         }
         stage('Build and run container') {
