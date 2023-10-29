@@ -29,7 +29,7 @@ pipeline {
                 ]
 
                 // Scan again and fail on CRITICAL vulns
-                sh 'trivy image --ignore-unfixed --exit-code 1 --severity CRITICAL api_calc:latest'
+                sh 'trivy image --exit-code 1 --severity CRITICAL api_calc:latest'
             }
         }
         stage('Scan with Semgrep') {
