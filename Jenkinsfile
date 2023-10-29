@@ -40,7 +40,7 @@ pipeline {
                 pip3 install semgrep
                 semgrep --config=auto --junit-xml -o reports/api_calc-scan.xml api_calc.py
                 deactivate'''
-                junit skipMarkingBuildUnstable: true, testResults: 'api_calc-scan.xml'
+                junit skipMarkingBuildUnstable: true, testResults: 'reports/api_calc-scan.xml'
             }
         }
     }
