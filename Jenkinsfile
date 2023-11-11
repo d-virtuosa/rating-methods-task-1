@@ -2,18 +2,28 @@ pipeline {
     agent any
 
     stages {
+        stage('Scan code with Semgrep') {
+            steps {
+                sh '''#!/bin/bash
+                python3 -m venv .venv
+                source .venv/bin/activate
+                pip3 install semgrep
+                semgrep --config=auto --junit-xml -o reports/api_calc-scan.xml api_calc.py
+                deactivate'''
+                junit skipMarkingBuildUnstable: true, testResults: 'reports/api_calc-scan.xml'
+            }
+        }
         stage('Removing previous image') {
             steps {
                 sh 'docker stop $(docker container ls -q)'
             }
         }
-        stage('Build and run container') {
+        stage('Build container') {
             steps {
                 sh 'docker build -f Dockerfile -t api_calc .'
-                sh 'docker run -d -p 5000:5000 api_calc:latest'
             }
         }
-        stage('Scan with Trivy') {
+        stage('Scan container with Trivy') {
             steps {
                 sh 'curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/html.tpl > html.tpl'
                 sh 'mkdir -p reports'
@@ -32,15 +42,9 @@ pipeline {
                 sh 'trivy image --ignore-unfixed --exit-code 1 --severity CRITICAL api_calc:latest'
             }
         }
-        stage('Scan with Semgrep') {
+        stage('Run container after scans') {
             steps {
-                sh '''#!/bin/bash
-                python3 -m venv .venv
-                source .venv/bin/activate
-                pip3 install semgrep
-                semgrep --config=auto --junit-xml -o reports/api_calc-scan.xml api_calc.py
-                deactivate'''
-                junit skipMarkingBuildUnstable: true, testResults: 'reports/api_calc-scan.xml'
+                sh 'docker run -d -p 5000:5000 api_calc:latest'
             }
         }
     }
